@@ -1,4 +1,4 @@
-build: compile test
+build: compile test clean yacc
 
 compile:
 	javac lexer/*.java
@@ -22,8 +22,7 @@ clean:
 	(cd main; rm *.class)
 
 yacc:
-	# /usr/ccs/bin/yacc -v doc/front.y
-	yacc -v doc/front.y
+	(cd ../doc;./yacc.sh)
 
-	rm y.tab.c
-	mv y.output doc
+
+
