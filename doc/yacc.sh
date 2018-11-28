@@ -17,4 +17,4 @@ cc y.tab.c -ly -ll
 ./a.out #type input "2+3, then enter"
 
 
-rm y.tab.c y.output lex.yy.c a.out
+rm y.tab.c y.output lex.yy.c a.out 
