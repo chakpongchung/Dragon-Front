@@ -10,9 +10,11 @@ compile:
 test:
 	@for i in `(cd tests; ls *.t | sed -e 's/.t$$//')`;\
 		do echo $$i.t;\
-		java main.Main <tests/$$i.t >tmp/$$i.i;\
+		java main.Main tests/$$i.t >tmp/$$i.i;\
 		diff tests/$$i.i tmp/$$i.i;\
 	done
+		# you can use the default constructor of Lexer() to read from System.in
+		# java main.Main <tests/$$i.t >tmp/$$i.i;\
 
 clean:
 	(cd lexer; rm *.class)

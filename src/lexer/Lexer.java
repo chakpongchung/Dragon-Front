@@ -1,5 +1,6 @@
 package lexer;
 import java.io.*; import java.util.*; import symbols.*;
+
 /**
  * 词法分析器
  *
@@ -13,7 +14,10 @@ public class Lexer {
     * 当前读取的字符。
     */
    char peek = ' ';
-   /**
+
+    char[] charArray;
+    int focus=0;
+    /**
     * String到Word词法单元的对应表，用于管理保留字以及已经识别到的标识符。
     * 如果识别到的String是保留字或者标识符，那么就直接返回该Word词法单元而不创建新的Word。
     */
@@ -39,13 +43,56 @@ public class Lexer {
       reserve( Type.Int  );  reserve( Type.Char  );
       reserve( Type.Bool );  reserve( Type.Float );
    }
+
+    public Lexer(String filename) throws FileNotFoundException {
+
+        reserve( new Word("if",    Tag.IF)    );
+        reserve( new Word("else",  Tag.ELSE)  );
+        reserve( new Word("while", Tag.WHILE) );
+        reserve( new Word("do",    Tag.DO)    );
+        reserve( new Word("break", Tag.BREAK) );
+
+        reserve( Word.True );  reserve( Word.False );
+
+        reserve( Type.Int  );  reserve( Type.Char  );
+        reserve( Type.Bool );  reserve( Type.Float );
+
+
+        File file = new File(filename);
+        Scanner scanner = new Scanner(file);
+
+        String theString = scanner.nextLine();
+        while (scanner.hasNextLine()) {
+            theString = theString + "\n" + scanner.nextLine();
+        }
+
+        charArray = theString.toCharArray();
+        focus=0;
+
+
+
+
+    }
    /**
     * 读取一个字符，保存在{@link #peek}中。
     * @throws IOException
     * @see #peek
     */
-   void readch() throws IOException { peek = (char)System.in.read(); }
-   /**
+//   void readch() throws IOException { peek = (char)System.in.read(); }
+
+    void readch() throws IOException {
+
+       if(focus<charArray.length){
+           peek=charArray[focus++];
+       }else{
+           peek=(char) (-1);
+       }
+
+
+   }
+
+
+    /**
     * 判断读取的字符是否与输入参数c相同。
     * 起到预读字符的作用，用于判断组合符号，如“&&”等。
     * @param c 期望的字符
